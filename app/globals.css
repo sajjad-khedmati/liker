@@ -2,14 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
-
-html,
-body,
-:root {
-	height: 100%;
+.cl-internal-b3fm6y,
+.cl-internal-wkkub3,
+.cl-userButtonPopoverFooter.🔒️.cl-internal-uyu30o {
+	display: none;
 }
