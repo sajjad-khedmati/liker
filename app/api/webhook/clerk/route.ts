@@ -1,6 +1,8 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { mongodb_connection } from "@/libs/utils/database";
+import User from "@/libs/models/user.model";
 
 export async function POST(req: Request) {
 	// You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -49,15 +51,143 @@ export async function POST(req: Request) {
 	}
 
 	// Get the ID and type
-	const { id } = evt.data;
 	const eventType = evt.type;
 
 	if (eventType === "user.created") {
-		// store user to db
+		try {
+			await mongodb_connection();
+
+			const {
+				username,
+				email_addresses,
+				first_name,
+				last_name,
+				image_url,
+				id,
+			} = payload?.data;
+
+			const res = await User.create({
+				user_id: id,
+				username: username ? username : first_name + last_name,
+				emailAddresses: email_addresses,
+				firstname: first_name,
+				lastname: last_name,
+				image_url: image_url,
+			});
+
+			if (!res)
+				return Response.json(
+					{
+						message: "user not created!",
+					},
+					{
+						status: 400,
+					},
+				);
+
+			return Response.json({
+				message: "user succesfully added to db",
+			});
+		} catch (error) {
+			return Response.json(
+				{
+					message: "Internal server error!",
+				},
+				{
+					status: 500,
+				},
+			);
+		}
 	}
 
-	console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-	console.log("Webhook body:", body);
+	if (eventType === "user.updated") {
+		try {
+			const { username, email_addresses, first_name, last_name, image_url } =
+				payload.data;
+			await mongodb_connection();
+
+			User.findOneAndUpdate(
+				{
+					username: username ? username : first_name + last_name,
+				},
+				{
+					username: username ? username : first_name + last_name,
+					emailAddresses: email_addresses,
+					firstname: first_name,
+					lastname: last_name,
+					image_url: image_url,
+				},
+			)
+				.then((res) => {
+					return Response.json(
+						{
+							message: "succefully Updated!",
+						},
+						{
+							status: 201,
+						},
+					);
+				})
+				.catch((err) => {
+					return Response.json(
+						{
+							message: "an error was accourded when trying to update user",
+						},
+						{
+							status: 400,
+						},
+					);
+				});
+		} catch (error) {
+			return Response.json(
+				{
+					message: "Internal server error",
+				},
+				{
+					status: 500,
+				},
+			);
+		}
+	}
+
+	if (eventType === "user.deleted") {
+		try {
+			const { id } = payload.data;
+
+			await mongodb_connection();
+
+			User.deleteOne({
+				user_id: id,
+			})
+				.then((res) => {
+					return Response.json(
+						{
+							message: "user successfully deleted",
+						},
+						{
+							status: 201,
+						},
+					);
+				})
+				.catch((err) => {
+					return Response.json(
+						{
+							message: "user not deleted!",
+						},
+						{
+							status: 400,
+						},
+					);
+				});
+		} catch (error) {
+			return Response.json(
+				{
+					message: "Internal server error!",
+				},
+				{ status: 500 },
+			);
+		}
+	}
 
 	return new Response("", { status: 200 });
 }
