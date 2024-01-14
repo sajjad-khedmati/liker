@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.hidden-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
 .cl-internal-b3fm6y,
 .cl-internal-wkkub3,
 .cl-userButtonPopoverFooter.🔒️.cl-internal-uyu30o {

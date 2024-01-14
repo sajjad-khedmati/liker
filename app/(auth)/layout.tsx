@@ -3,7 +3,7 @@ import React from "react";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<main className="w-screen h-screen flex justify-center items-center">
+		<main className="w-screen h-screen flex justify-center mt-8 overflow-hidden">
 			<section className="flex flex-col items-center">
 				<div className="flex flex-col items-center gap-2 mb-4">
 					<div className="w-32 h-32 flex items-center justify-center">
