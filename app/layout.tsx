@@ -24,7 +24,9 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang="en" className="hidden-scrollbar">
-				<body className={`${poppins.className} w-full h-full container`}>
+				<body
+					className={`${poppins.className} w-full h-screen container overflow-hidden flex flex-col`}
+				>
 					<header>
 						<Navbar />
 					</header>
