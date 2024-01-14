@@ -1,6 +1,6 @@
 "use client";
 // current user
-import { Home, Settings2, User, User2Icon } from "lucide-react";
+import { Compass, Home, Settings2, User } from "lucide-react";
 
 // Components
 import Image from "next/image";
@@ -13,6 +13,7 @@ import { SignInButton, UserButton, useSession } from "@clerk/nextjs";
 // get size of window hook
 import { useWindowSize } from "@uidotdev/usehooks";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Navbar = () => {
 	const session = useSession();
@@ -32,36 +33,36 @@ const Navbar = () => {
 			</div>
 
 			{/* show this section (navbar items) when screen is greater than 768px on the middle of navbar */}
-			{width && width > 768 && (
-				<ul className="flex items-center gap-8">
-					<li
-						className="text-sm font-medium text-gray-600 hover:text-black transition-all duration-300 ease-out cursor-pointer
+			<ul className="items-center gap-8 hidden md:flex">
+				<li
+					className="text-sm font-medium text-gray-600 hover:text-black transition-all duration-300 ease-out cursor-pointer
 					flex items-center gap-2"
-					>
-						<Home className="w-4 h-4" />
-						<Link href={"/"}>Home</Link>
-					</li>
-					<li
-						className="text-sm font-medium text-gray-600 hover:text-black transition-all duration-300 ease-out cursor-pointer
+				>
+					<Home className="w-4 h-4" />
+					<Link href={"/"}>Home</Link>
+				</li>
+				<li
+					className="text-sm font-medium text-gray-600 hover:text-black transition-all duration-300 ease-out cursor-pointer
 					flex items-center gap-2"
-					>
-						<User2Icon className="w-4 h-4" />
-						<Link href={"/profile"}>Profile</Link>
-					</li>
-					<li
-						className="text-sm font-medium text-gray-600 hover:text-black transition-all duration-300 ease-out cursor-pointer
+				>
+					<Compass className="w-4 h-4" />
+					<Link href={"/explore"}>Explore</Link>
+				</li>
+				<li
+					className="text-sm font-medium text-gray-600 hover:text-black transition-all duration-300 ease-out cursor-pointer
 					flex items-center gap-2"
-					>
-						<Settings2 className="w-4 h-4" />
-						<Link href={"/manage"}>Manage</Link>
-					</li>
-				</ul>
-			)}
+				>
+					<Settings2 className="w-4 h-4" />
+					<Link href={"/manage"}>Manage</Link>
+				</li>
+			</ul>
 
 			{/* user button - if not loggedIn user show Register button else 
                 show avatar with user account management 
             */}
-			{session.isSignedIn ? (
+			{!session.session && !session.isLoaded ? (
+				<Skeleton className="w-10 h-10 rounded-full" />
+			) : session.isSignedIn ? (
 				<UserButton afterSignOutUrl="/" />
 			) : (
 				<SignInButton afterSignInUrl="/" mode="modal" afterSignUpUrl="/">

@@ -1,5 +1,6 @@
+"use client";
 // Icons
-import { DoorClosedIcon, Home, Menu, Settings2, User2Icon } from "lucide-react";
+import { Compass, DoorClosedIcon, Home, Menu, Settings2 } from "lucide-react";
 
 // Components - shadcn
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "@clerk/nextjs";
+import { useRef } from "react";
 
 // tailwindcss styles
 const sheetItemStyles = `text-gray-600 flex items-center gap-2 justify-center flex-col scale-90 
@@ -23,6 +25,7 @@ hover:bg-gray-100/60 hover:text-black px-2 py-4 rounded-xl transition-all durati
 
 const MobileSheet = () => {
 	const session = useSession();
+	const closeRef = useRef<HTMLButtonElement>(null);
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -47,18 +50,30 @@ const MobileSheet = () => {
 				</SheetHeader>
 
 				<div className="my-6 flex flex-col gap-2">
-					<Link href={"/"} className={sheetItemStyles}>
+					<Link
+						href={"/"}
+						className={sheetItemStyles}
+						onClick={() => closeRef && closeRef.current?.click()}
+					>
 						<Home className="w-8 h-8" />
 						<span className="text-sm font-medium">home page</span>
 					</Link>
 
 					{session.isSignedIn && (
-						<Link href={"/profile"} className={sheetItemStyles}>
-							<User2Icon className="w-8 h-8" />
-							<span className="text-sm font-medium">profile</span>
+						<Link
+							href={"/explore"}
+							className={sheetItemStyles}
+							onClick={() => closeRef && closeRef.current?.click()}
+						>
+							<Compass className="w-8 h-8" />
+							<span className="text-sm font-medium">explore</span>
 						</Link>
 					)}
-					<Link href={"/manage"} className={sheetItemStyles}>
+					<Link
+						href={"/manage"}
+						className={sheetItemStyles}
+						onClick={() => closeRef && closeRef.current?.click()}
+					>
 						<Settings2 className="w-8 h-8" />
 						<span className="text-sm font-medium">manage your link</span>
 					</Link>
@@ -66,7 +81,7 @@ const MobileSheet = () => {
 
 				<SheetFooter>
 					<SheetClose asChild>
-						<Button>
+						<Button ref={closeRef}>
 							<DoorClosedIcon className="mr-2 w-5 h-5" />
 							<span>Close Sheet</span>
 						</Button>
