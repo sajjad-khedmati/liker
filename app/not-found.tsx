@@ -3,11 +3,14 @@ import Link from "next/link";
 
 const page = () => {
 	return (
-		<main className="w-full flex-1 my-4 grid grid-cols-1 lg:grid-cols-2 lg:items-center gap-x-12 gap-y-8">
-			<div className="w-full h-full flex justify-center items-center lg:order-2 relative">
+		<main className="w-full flex-1 my-4 grid grid-cols-1 lg:flex lg:items-center justify-between gap-x-12 gap-y-8">
+			<div
+				className="w-[300px] h-[300px] min-w-max lg:w-[600px] lg:h-[600px] flex justify-center items-center mx-auto 
+			lg:order-2 relative"
+			>
 				<Image src={"/404.svg"} fill alt="404 page was not found" />
 			</div>
-			<div className="text-center lg:text-start">
+			<div className="text-center lg:text-start lg:flex-1">
 				<span className="font-bold text-6xl lg:text-4xl text-blue-600">
 					Whoops!{" "}
 				</span>

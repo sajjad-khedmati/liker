@@ -5,6 +5,9 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./_components/navbar";
 
+// shadcn-ui toast container
+import { Toaster } from "@/components/ui/toaster";
+
 const poppins = Poppins({
 	weight: ["300", "400", "500", "700", "900"],
 	preload: false,
@@ -24,13 +27,12 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang="en" className="hidden-scrollbar">
-				<body
-					className={`${poppins.className} w-full h-screen container overflow-hidden flex flex-col`}
-				>
+				<body className={`${poppins.className} w-full container flex flex-col`}>
 					<header>
 						<Navbar />
 					</header>
 					{children}
+					<Toaster />
 				</body>
 			</html>
 		</ClerkProvider>

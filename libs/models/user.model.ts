@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
 				type: Object,
 			},
 		],
+		link: { type: mongoose.Types.ObjectId, default: "", ref: "Link" },
 	},
 	{
 		timestamps: true,

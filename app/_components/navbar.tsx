@@ -17,9 +17,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Navbar = () => {
 	const session = useSession();
-
-	console.log(session);
-
 	const { width } = useWindowSize();
 	return (
 		<nav
